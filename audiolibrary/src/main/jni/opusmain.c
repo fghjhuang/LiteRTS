@@ -50,13 +50,14 @@ int cvbr=1;
 int complexity = 4;
 int packet_loss_perc=0;
 
-
-jstring Java_com_huangstudio_audiolibrary_OpusHelper_test(JNIEnv *env,jobject object){
+JNIEXPORT
+jstring JNICALL Java_com_huangstudio_audiolibrary_OpusHelper_test(JNIEnv *env,jobject object){
    return (*env)->NewStringUTF(env,"testopus2");
 }
 //初始化语音
 //com_gauss_ opus _encode java层的包名，Opus类名，open函数名 这样定义好java就可以直接调用了
-jint Java_com_huangstudio_audiolibrary_OpusHelper_open(JNIEnv *env,jobject thiz,jint compression){
+JNIEXPORT
+jint JNICALL Java_com_huangstudio_audiolibrary_OpusHelper_open(JNIEnv *env,jobject thiz,jint compression){
 
    int err;
     encoder = opus_encoder_create(SAMPLE_RATE, CHANNELS, APPLICATION, &err);
@@ -86,13 +87,13 @@ jint Java_com_huangstudio_audiolibrary_OpusHelper_open(JNIEnv *env,jobject thiz,
 
 }
 JNIEXPORT
-jint Java_com_huangstudio_audiolibrary_OpusHelper_getFrameSize(JNIEnv *env,jobject thiz)
+jint JNICALL Java_com_huangstudio_audiolibrary_OpusHelper_getFrameSize(JNIEnv *env,jobject thiz)
 {
     return  FRAME_SIZE;
 }
 //压缩
 JNIEXPORT
-jint Java_com_huangstudio_audiolibrary_OpusHelper_encode(JNIEnv *env,jobject thiz,jshortArray lin, jint offset, jbyteArray encoded, jint size)
+jint JNICALL Java_com_huangstudio_audiolibrary_OpusHelper_encode(JNIEnv *env,jobject thiz,jshortArray lin, jint offset, jbyteArray encoded, jint size)
 {
     int err;
     int i;
@@ -112,9 +113,9 @@ nbBytes = opus_encode(encoder,out , size, cbits, 480);//
     return nbBytes;
 
 }
-//解压
+//解压 Java_com_huangstudio_audiolibrary_OpusHelper_decode
 JNIEXPORT
-jint Java_com_huangstudio_audiolibrary_OpusHelper_decode(JNIEnv *env,jobject thiz,
+jint JNICALL Java_com_huangstudio_audiolibrary_OpusHelper_decode(JNIEnv *env,jobject thiz,
                                                        jbyteArray encoded, jshortArray lin, int size)
 {
     int err;
@@ -146,8 +147,8 @@ jint Java_com_huangstudio_audiolibrary_OpusHelper_decode(JNIEnv *env,jobject thi
 
 
 //释放语音对象
-
-void Java_com_huangstudio_audiolibrary_OpusHelper_close(JNIEnv *env,jobject thiz)
+JNIEXPORT
+void JNICALL Java_com_huangstudio_audiolibrary_OpusHelper_close(JNIEnv *env,jobject thiz)
 {
 
   if(encoder !=NULL){
@@ -157,3 +158,4 @@ void Java_com_huangstudio_audiolibrary_OpusHelper_close(JNIEnv *env,jobject thiz
   opus_decoder_destroy(decoder);
   }
 }
+

@@ -11,9 +11,6 @@ import com.huangstudio.androidopus.Callview.callprotocol.JavaHttpHelper
 import com.huangstudio.androidopus.Callview.callprotocol.PostHelper
 import com.huangstudio.androidopus.R
 import kotlinx.android.synthetic.main.activity_call.*
-import kotlinx.coroutines.experimental.CommonPool
-import kotlinx.coroutines.experimental.delay
-import kotlinx.coroutines.experimental.launch
 import org.json.JSONObject
 import java.net.Inet4Address
 import java.net.NetworkInterface
@@ -21,6 +18,9 @@ import java.net.SocketException
 import android.content.BroadcastReceiver
 import android.content.IntentFilter
 import com.huangstudio.audiolibrary.audiohelper.VoiceRecorder
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 
 /**
@@ -130,7 +130,7 @@ class CallActivity : AppCompatActivity() {
             CallState.calloutstate="unknown"
             CallState.callstate="unknown"
             VoiceRecorder.getInstance().stopCall()
-            launch(CommonPool){
+            GlobalScope.launch{
                 delay(1000L)
                 finish()
             }
@@ -201,7 +201,7 @@ class CallActivity : AppCompatActivity() {
                         CallState.calloutstate="unknown"
                         CallState.callstate="unknown"
                         VoiceRecorder.getInstance().stopCall()
-                        launch(CommonPool){
+                        GlobalScope.launch{
                             delay(1000L)
                             finish()
                         }
@@ -248,7 +248,7 @@ class CallActivity : AppCompatActivity() {
                     "connect_fail"->{
                         Log.i(TAG, "processPostResult:对方正在通话中 ")
                         calloutstate.text="抱歉,对方正在通话中..."
-                        launch(CommonPool){
+                        GlobalScope.launch{
                             delay(1000L)
                             finish()
                         }
